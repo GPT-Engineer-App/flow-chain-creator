@@ -31,6 +31,7 @@ const Index = () => {
   const [elements, setElements] = useState(initialElements);
   const [nodeData, setNodeData] = useState({ type: '', content: '' });
   const onConnect = (params) => setElements((els) => addEdge(params, els));
+  const onLoad = (reactFlowInstance) => reactFlowInstance.fitView();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +64,7 @@ const Index = () => {
         <ReactFlow
           elements={elements}
           onConnect={onConnect}
+          onLoad={onLoad}
           nodeTypes={nodeTypes}
           style={{ width: '100%', height: '90%' }}
         >

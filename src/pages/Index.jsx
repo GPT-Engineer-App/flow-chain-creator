@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import ReactFlow, { addEdge, MiniMap, Controls, Background, Handle } from 'react-flow-renderer';
-  import SpecialConnectorNode from '../components/nodes/SpecialConnectorNode';
+import SpecialConnectorNode from '../components/nodes/SpecialConnectorNode';
 import ImageNode from '../components/nodes/ImageNode';
 import LinkNode from '../components/nodes/LinkNode';
 import TextNode from '../components/nodes/TextNode';
 import CodeNode from '../components/nodes/CodeNode';
 import YouTubeNode from '../components/nodes/YouTubeNode';
 import { Container, Text, VStack, Input, Textarea, Button, FormControl, FormLabel } from "@chakra-ui/react";
+import { Configuration, OpenAIApi } from 'openai';
 
 const initialElements = [
   { id: '1', type: 'input', data: { label: 'Start Node' }, position: { x: 250, y: 5 } },
@@ -67,11 +68,33 @@ const Index = () => {
     return data;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const data = gatherData();
-    // Here you would submit the data to OpenAI GPT-4
-    // For example, you might use fetch or axios to send a POST request
     console.log('Submitting Data:', data);
+    const response = await sendToGPT4(data);
+    console.log('GPT-4 Response:', response);
+    // Process the response as needed
+  };
+
+  const sendToGPT4 = async (data) => {
+    const configuration = new Configuration({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    const openai = new OpenAIApi(configuration);
+
+    try {
+      const response = await openai.createChatCompletion({
+        model: "gpt-4",
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: `Process the following data: ${JSON.stringify(data)}` },
+        ],
+      });
+      return response.data.choices[0].message.content;
+    } catch (error) {
+      console.error("Error communicating with GPT-4:", error);
+      return null;
+    }
   };
 
   return (

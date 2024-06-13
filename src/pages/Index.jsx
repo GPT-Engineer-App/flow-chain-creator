@@ -109,9 +109,20 @@ const Index = () => {
   const handleSubmit = async () => {
     const data = gatherData();
     console.log('Submitting Data:', data);
-    const response = await sendToGPT4(data);
-    console.log('GPT-4 Response:', response);
-    // Process the response as needed
+    try {
+      const response = await sendToGPT4(data);
+      console.log('GPT-4 Response:', response);
+      // Process the response as needed
+    } catch (error) {
+      console.error("Error communicating with GPT-4:", error);
+      toast({
+        title: "Error",
+        description: "There was an error communicating with GPT-4.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   const sendToGPT4 = async (data) => {

@@ -6,7 +6,7 @@ import LinkNode from '../components/nodes/LinkNode';
 import TextNode from '../components/nodes/TextNode';
 import CodeNode from '../components/nodes/CodeNode';
 import YouTubeNode from '../components/nodes/YouTubeNode';
-import { Container, Text, VStack, Input, Textarea, Button, FormControl, FormLabel } from "@chakra-ui/react";
+import { Container, Text, VStack, Input, Textarea, Button, FormControl, FormLabel, Select, useToast } from "@chakra-ui/react";
 import * as openai from 'openai';
 
 const initialElements = [
@@ -34,7 +34,19 @@ const nodeTypes = {
 const Index = () => {
   const [elements, setElements] = useState(initialElements);
   const [nodeData, setNodeData] = useState({ type: '', content: '' });
-  const onConnect = (params) => setElements((els) => addEdge(params, els));
+  const toast = useToast();
+
+  const onConnect = (params) => {
+    setElements((els) => addEdge(params, els));
+    toast({
+      title: "Nodes connected",
+      description: "Nodes have been successfully connected.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
   const onLoad = (reactFlowInstance) => reactFlowInstance.fitView();
 
   const handleInputChange = (e) => {
@@ -43,9 +55,17 @@ const Index = () => {
   };
 
   const addNode = () => {
-    if (nodeData.type === 'specialConnectorNode') {
-      nodeData.instructions = 'Process the node chain as follows...';
+    if (!nodeData.type || !nodeData.content) {
+      toast({
+        title: "Error",
+        description: "Please provide both node type and content.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
     }
+
     const newNode = {
       id: (elements.length + 1).toString(),
       type: nodeData.type,
@@ -53,6 +73,13 @@ const Index = () => {
       position: { x: Math.random() * 400, y: Math.random() * 400 },
     };
     setElements([...elements, newNode]);
+    toast({
+      title: "Node added",
+      description: "A new node has been added successfully.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   const gatherData = () => {
@@ -91,6 +118,13 @@ const Index = () => {
       return response.data.choices[0].message.content;
     } catch (error) {
       console.error("Error communicating with GPT-4:", error);
+      toast({
+        title: "Error",
+        description: "There was an error communicating with GPT-4.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       return null;
     }
   };
@@ -101,7 +135,14 @@ const Index = () => {
         <Text fontSize="2xl">React Flow Example</Text>
         <FormControl id="node-type">
           <FormLabel>Node Type</FormLabel>
-          <Input name="type" value={nodeData.type} onChange={handleInputChange} placeholder="Enter node type (e.g., textNode, imageNode)" />
+          <Select name="type" value={nodeData.type} onChange={handleInputChange} placeholder="Select node type">
+            <option value="textNode">Text Node</option>
+            <option value="imageNode">Image Node</option>
+            <option value="linkNode">Link Node</option>
+            <option value="codeNode">Code Node</option>
+            <option value="youtubeNode">YouTube Node</option>
+            <option value="specialConnectorNode">Special Connector Node</option>
+          </Select>
         </FormControl>
         <FormControl id="node-content">
           <FormLabel>Node Content</FormLabel>

@@ -7,7 +7,7 @@ import TextNode from '../components/nodes/TextNode';
 import CodeNode from '../components/nodes/CodeNode';
 import YouTubeNode from '../components/nodes/YouTubeNode';
 import { Container, Text, VStack, Input, Textarea, Button, FormControl, FormLabel } from "@chakra-ui/react";
-import { Configuration as OpenAIConfiguration, OpenAIApi } from 'openai';
+import { OpenAIApi } from 'openai';
 
 const initialElements = [
   { id: '1', type: 'input', data: { label: 'Start Node' }, position: { x: 250, y: 5 } },
@@ -63,8 +63,6 @@ const Index = () => {
       position: element.position,
     }));
     console.log('Gathered Data:', data);
-    // Here you would prepare the data for submission to OpenAI GPT-4
-    // For example, you might structure it in a specific way or add additional metadata
     return data;
   };
 
@@ -77,9 +75,9 @@ const Index = () => {
   };
 
   const sendToGPT4 = async (data) => {
-    const configuration = new OpenAIConfiguration({
+    const configuration = {
       apiKey: process.env.OPENAI_API_KEY,
-    });
+    };
     const openai = new OpenAIApi(configuration);
 
     try {

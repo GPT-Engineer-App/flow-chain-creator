@@ -78,8 +78,9 @@ const Index = () => {
       position: { x: Math.random() * 400, y: Math.random() * 400 },
     };
 
-    setElements([...elements, newNode]);
-    console.log('Updated Elements:', elements);
+    console.log('New Node:', newNode);
+
+    setElements((prevElements) => [...prevElements, newNode]);
     toast({
       title: "Node added",
       description: "A new node has been added successfully.",

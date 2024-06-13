@@ -69,10 +69,17 @@ const Index = () => {
     const newNode = {
       id: (elements.length + 1).toString(),
       type: nodeData.type,
-      data: { ...nodeData },
+      data: nodeData.type === 'textNode' ? { text: nodeData.content } :
+            nodeData.type === 'imageNode' ? { src: nodeData.content, alt: 'New Image' } :
+            nodeData.type === 'linkNode' ? { href: nodeData.content, label: 'New Link' } :
+            nodeData.type === 'codeNode' ? { code: nodeData.content } :
+            nodeData.type === 'youtubeNode' ? { videoId: nodeData.content } :
+            nodeData.type === 'specialConnectorNode' ? { instructions: nodeData.content } : {},
       position: { x: Math.random() * 400, y: Math.random() * 400 },
     };
+
     setElements([...elements, newNode]);
+    console.log('Updated Elements:', elements);
     toast({
       title: "Node added",
       description: "A new node has been added successfully.",

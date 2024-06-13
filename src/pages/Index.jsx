@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactFlow, { addEdge, MiniMap, Controls, Background, Handle } from 'react-flow-renderer';
+  import SpecialConnectorNode from '../components/nodes/SpecialConnectorNode';
 import ImageNode from '../components/nodes/ImageNode';
 import LinkNode from '../components/nodes/LinkNode';
 import TextNode from '../components/nodes/TextNode';
@@ -16,6 +17,7 @@ const initialElements = [
   { id: '6', type: 'textNode', data: { text: 'This is a text node' }, position: { x: 400, y: 300 } },
   { id: '7', type: 'codeNode', data: { code: 'console.log("Hello, world!");' }, position: { x: 250, y: 400 } },
   { id: '8', type: 'youtubeNode', data: { videoId: 'dQw4w9WgXcQ' }, position: { x: 100, y: 500 } },
+  { id: '9', type: 'specialConnectorNode', data: { instructions: 'Process the node chain as follows...' }, position: { x: 400, y: 500 } },
   { id: 'e2-3', source: '2', target: '3', animated: true },
 ];
 
@@ -25,6 +27,7 @@ const nodeTypes = {
   textNode: TextNode,
   codeNode: CodeNode,
   youtubeNode: YouTubeNode,
+  specialConnectorNode: SpecialConnectorNode,
 };
 
 const Index = () => {
@@ -39,6 +42,9 @@ const Index = () => {
   };
 
   const addNode = () => {
+    if (nodeData.type === 'specialConnectorNode') {
+      nodeData.instructions = 'Process the node chain as follows...';
+    }
     const newNode = {
       id: (elements.length + 1).toString(),
       type: nodeData.type,

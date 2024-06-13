@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactFlow, { addEdge, MiniMap, Controls, Background, Handle } from 'react-flow-renderer';
+import ReactFlow, { addEdge, MiniMap, Controls, Background, Handle, removeElements } from 'react-flow-renderer';
 import ImageNode from '../components/nodes/ImageNode';
 import LinkNode from '../components/nodes/LinkNode';
 import TextNode from '../components/nodes/TextNode';
@@ -31,6 +31,8 @@ const Index = () => {
   const [elements, setElements] = useState(initialElements);
   const [nodeData, setNodeData] = useState({ type: '', content: '' });
   const onConnect = (params) => setElements((els) => addEdge(params, els));
+  const onElementsRemove = (elementsToRemove) => setElements((els) => removeElements(elementsToRemove, els));
+  const onLoad = (reactFlowInstance) => reactFlowInstance.fitView();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +65,8 @@ const Index = () => {
         <ReactFlow
           elements={elements}
           onConnect={onConnect}
+          onElementsRemove={onElementsRemove}
+          onLoad={onLoad}
           nodeTypes={nodeTypes}
           style={{ width: '100%', height: '90%' }}
         >

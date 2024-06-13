@@ -5,6 +5,7 @@ import LinkNode from '../components/nodes/LinkNode';
 import TextNode from '../components/nodes/TextNode';
 import CodeNode from '../components/nodes/CodeNode';
 import YouTubeNode from '../components/nodes/YouTubeNode';
+import SpecialConnectorNode from '../components/nodes/SpecialConnectorNode';
 import { Container, Text, VStack, Input, Textarea, Button, FormControl, FormLabel } from "@chakra-ui/react";
 
 const initialElements = [
@@ -16,6 +17,7 @@ const initialElements = [
   { id: '6', type: 'textNode', data: { text: 'This is a text node' }, position: { x: 400, y: 300 } },
   { id: '7', type: 'codeNode', data: { code: 'console.log("Hello, world!");' }, position: { x: 250, y: 400 } },
   { id: '8', type: 'youtubeNode', data: { videoId: 'dQw4w9WgXcQ' }, position: { x: 100, y: 500 } },
+  { id: '9', type: 'specialConnectorNode', data: { instructions: '' }, position: { x: 250, y: 600 } },
   { id: 'e2-3', source: '2', target: '3', animated: true },
 ];
 
@@ -25,6 +27,7 @@ const nodeTypes = {
   textNode: TextNode,
   codeNode: CodeNode,
   youtubeNode: YouTubeNode,
+  specialConnectorNode: SpecialConnectorNode,
 };
 
 const Index = () => {

@@ -54,6 +54,26 @@ const Index = () => {
     setElements([...elements, newNode]);
   };
 
+  const gatherData = () => {
+    const data = elements.map(element => ({
+      id: element.id,
+      type: element.type,
+      data: element.data,
+      position: element.position,
+    }));
+    console.log('Gathered Data:', data);
+    // Here you would prepare the data for submission to OpenAI GPT-4
+    // For example, you might structure it in a specific way or add additional metadata
+    return data;
+  };
+
+  const handleSubmit = () => {
+    const data = gatherData();
+    // Here you would submit the data to OpenAI GPT-4
+    // For example, you might use fetch or axios to send a POST request
+    console.log('Submitting Data:', data);
+  };
+
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <VStack spacing={4} width="100%" height="100%">
@@ -67,6 +87,7 @@ const Index = () => {
           <Textarea name="content" value={nodeData.content} onChange={handleInputChange} placeholder="Enter node content (e.g., text, URL, code)" />
         </FormControl>
         <Button onClick={addNode}>Add Node</Button>
+        <Button colorScheme="blue" onClick={handleSubmit}>Submit</Button>
         <ReactFlow
           elements={elements}
           onConnect={onConnect}

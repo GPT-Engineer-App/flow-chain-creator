@@ -127,6 +127,16 @@ const Index = () => {
           { role: "system", content: "You are a helpful assistant." },
           { role: "user", content: `Process the following data: ${JSON.stringify(data)}` },
         ],
+      }).catch((error) => {
+        console.error("Error communicating with GPT-4:", error);
+        toast({
+          title: "Error",
+          description: "There was an error communicating with GPT-4.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return null;
       });
       return response.data.choices[0].message.content;
     } catch (error) {

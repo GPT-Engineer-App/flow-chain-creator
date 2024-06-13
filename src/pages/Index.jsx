@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactFlow, { addEdge, MiniMap, Controls, Background, Handle } from 'react-flow-renderer';
 import SpecialConnectorNode from '../components/nodes/SpecialConnectorNode';
 import ImageNode from '../components/nodes/ImageNode';
@@ -33,8 +33,13 @@ const nodeTypes = {
 
 const Index = () => {
   const [elements, setElements] = useState(initialElements);
+  const [renderedElements, setRenderedElements] = useState([]);
   const [nodeData, setNodeData] = useState({ type: '', content: '' });
   const toast = useToast();
+
+  useEffect(() => {
+    setRenderedElements(elements);
+  }, [elements]);
 
   const onConnect = (params) => {
     setElements((els) => addEdge(params, els));
@@ -159,7 +164,7 @@ const Index = () => {
         <Button onClick={addNode}>Add Node</Button>
         <Button colorScheme="blue" onClick={handleSubmit}>Submit</Button>
         <ReactFlow
-          elements={elements}
+          elements={renderedElements}
           onConnect={onConnect}
           onLoad={onLoad}
           nodeTypes={nodeTypes}
